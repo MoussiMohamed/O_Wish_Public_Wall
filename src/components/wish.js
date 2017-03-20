@@ -8,14 +8,11 @@ export default class Wish extends React.Component {
 
   render() {
 
-    return(
+    return (
       <div className="wish">
 
-        <p className="wish-header">{this.props.wishName}</p>
+        <p className="wish-header">{this.props.wish}</p>
 
-        <div className="wish-actions">
-
-        </div>
       </div>
     );
   }

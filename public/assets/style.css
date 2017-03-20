@@ -468,27 +468,6 @@ p {
   margin: 0 10px 0 0;
 }
 
-.wish-actions {
-  color: #9ecbd2;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-.wish-actions > a,
-.wish-actions > span {
-  margin-left: 15px;
-}
-
-.wish-actions a {
-  color: #9ecbd2;
-  text-decoration: underline;
-  transition: 0.2s ease-in-out;
-}
-
-.wish-actions > a:hover {
-  color: #fff;
-}
-
 .wish-count {
   color: #9ecbd2;
   margin-bottom: 20px;

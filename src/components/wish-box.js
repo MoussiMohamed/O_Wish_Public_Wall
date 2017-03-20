@@ -4,13 +4,15 @@ import jQuery from 'jquery';
 import WishForm from './wish-form';
 import Wish from './wish';
 
+import {API_CONFIG_URLs} from '../config/API_Urls';
+
 export default class WishBox extends React.Component {
 
   constructor() {
     super();
 
     this.state = {
-      wishes: []
+      wishesList: []
     };
   }
 
@@ -19,17 +21,17 @@ export default class WishBox extends React.Component {
   }
 
   render() {
-    const wishes = this._getWishes();
-    return(
+    const wishesList = this._getWishes();
+    return (
       <div className="row wishes-container">
         <div className="cell">
           <h2>Wish list management</h2>
           <div className="wish-box">
-            <WishForm addWish={this._addWish.bind(this)} />
+            <WishForm addWish={this._addWish.bind(this)}/>
 
-            <h3 className="wish-count">{this._getWishesTitle(wishes.length)}</h3>
+            <h3 className="wish-count">{this._getWishesTitle(wishesList.length)}</h3>
             <div className="wish-list">
-              {wishes}
+              {wishesList}
             </div>
           </div>
         </div>
@@ -38,10 +40,11 @@ export default class WishBox extends React.Component {
   }
 
   _getWishes() {
-    return this.state.wishes.map((wish) => {
+    console.log(this.state.wishesList);
+    return this.state.wishesList.map((wish) => {
       return <Wish
-               {...wish}
-               key={wish.id} />
+        {...wish}
+        key={wish.wish_id}/>
     });
   }
 
@@ -55,29 +58,41 @@ export default class WishBox extends React.Component {
     }
   }
 
-  _addWish(wishName) {
+  _addWish(wish) {
 
-    if(!wishName) {
+    if (!wish) {
       return;
     }
 
-    const wish = {
-      id: this.state.wishes.length + 1,
-      wishName: wishName
-    };
+    jQuery.ajax({
+      method: 'POST',
+      url: this._getURL(API_CONFIG_URLs.new_wish),
+      data: {wish: wish},
+      success: (wishResult) => {
 
-    this.setState({
-      wishes: this.state.wishes.concat([wish])
+        const wishAdded = {
+          wish_id: wishResult.wish.insertId,
+          wish: wish
+        };
+
+        this.setState({
+          wishesList: this.state.wishesList.concat([wishAdded])
+        });
+      }
     });
+  }
 
+  _getURL(serviceName) {
+    return API_CONFIG_URLs.apiPathBase + serviceName;
   }
 
   _fetchWishes() {
     jQuery.ajax({
       method: 'GET',
-      url: 'wishes.json',
+      url: this._getURL(API_CONFIG_URLs.wishesList),
       success: (wishes) => {
-        this.setState({ wishes })
+        var wishesList = wishes.wishes;
+        this.setState({wishesList});
       }
     });
   }
