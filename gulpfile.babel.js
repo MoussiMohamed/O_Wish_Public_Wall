@@ -51,7 +51,7 @@ gulp.task('lint', () => {
 
 gulp.task('serve', ['transpile'], () => sync.init({
   server: 'public',
-  port: process.env.PORT || 8000,
+  port: process.env.PORT || 8001,
   host: process.env.IP || 'localhost'
 }));
 
