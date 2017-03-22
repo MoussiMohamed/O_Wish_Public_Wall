@@ -1,4 +1,4 @@
-# O_Wish Admin Console App
+# O_Wish Public Wall
 
 # Babel with Gulp
 
