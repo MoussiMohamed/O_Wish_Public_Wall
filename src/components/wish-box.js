@@ -1,15 +1,11 @@
 import React from 'react';
 import jQuery from 'jquery';
-
-import WishForm from './wish-form';
 import Wish from './wish';
-
 import SocketIOClient from 'socket.io-client';
-
 import {API_CONFIG_URLs} from '../config/API_Urls';
 
 // Creating the socket-client instance will automatically connect to the server.
-const socket = SocketIOClient('http://localhost:3002');
+const socket = SocketIOClient(API_CONFIG_URLs.socketIO);
 
 export default class WishBox extends React.Component {
 
@@ -48,9 +44,8 @@ export default class WishBox extends React.Component {
     return (
       <div className="row wishes-container">
         <div className="cell">
-          <h2>Wish list management</h2>
+          <h2>Wishes Public Wall</h2>
           <div className="wish-box">
-            <WishForm addWish={this._addWish.bind(this)}/>
 
             <h3 className="wish-count">{this._getWishesTitle(wishesList.length)}</h3>
             <div className="wish-list">
@@ -90,8 +85,11 @@ export default class WishBox extends React.Component {
       method: 'POST',
       url: this._getURL(API_CONFIG_URLs.new_wish),
       data: {wish: wish},
-      success: () => {
-
+      success: (resp) => {
+        console.log(resp);
+      },
+      error: (err) => {
+        console.log(err);
       }
     });
   }
@@ -105,8 +103,16 @@ export default class WishBox extends React.Component {
       method: 'GET',
       url: this._getURL(API_CONFIG_URLs.wishesList),
       success: (wishes) => {
-        var wishesList = wishes.wishes;
+        const wishesList = wishes.wishes;
+
+        wishesList.sort(function (a, b) {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+
         this.setState({wishesList});
+      },
+      error: (err) => {
+        console.log(err);
       }
     });
   }
