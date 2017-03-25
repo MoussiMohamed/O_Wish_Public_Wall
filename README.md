@@ -1,10 +1,5 @@
 # O_Wish Public Wall
 
-# Babel with Gulp
-
-Starter code for transpiling ES2015 (including modules) with Babel, Gulp and Browserify.
-
-
 # Installing
 
 1. Clone the repo
